@@ -34,13 +34,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateCompany(int companyId, Company company) {
+    public void updateCompany(int companyId, Company company) throws CouponSystemException {
+        if (!companyRepository.existsById(companyId)) {
+            throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
+        }
+        if (companyId != company.getId()) {
+            throw new CouponSystemException(ErrMsg.COMPANY_ID_ERROR);
+        }
+        Company companyFromDB = companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
+        if (!companyFromDB.getName().equals(company.getName())) {
+            throw new CouponSystemException(ErrMsg.COMPANY_NAME_ERROR);
+        }
+        company.setId(companyId);
+        companyRepository.saveAndFlush(company);
 
     }
 
     @Override
-    public void deleteCompany(int companyId) {
-
+    public void deleteCompany(int companyId) throws CouponSystemException {
+        if (!companyRepository.existsById(companyId)) {
+            throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
+        }
+        companyRepository.deleteById(companyId);
     }
 
     @Override
@@ -54,27 +69,44 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addNewCustomer(Customer customer) {
+    public void addNewCustomer(Customer customer) throws CouponSystemException {
+        if (customerRepository.existsById(customer.getId())) {
+            throw new CouponSystemException(ErrMsg.ID_ALREADY_EXISTS);
+        }
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            throw new CouponSystemException(ErrMsg.CUSTOMER_EMAIL_ALREADY_EXISTS);
+        }
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public void updateCustomer(int customerId, Customer customer) throws CouponSystemException {
+        if (!customerRepository.existsById(customerId)) {
+            throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
+        }
+        if (customerId != customer.getId()) {
+            throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_ID);
+        }
+        customer.setId(customerId);
+        customerRepository.saveAndFlush(customer);
 
     }
 
     @Override
-    public void updateCustomer(int customerId, Customer customer) {
-
-    }
-
-    @Override
-    public void deleteCustomer(int customerId) {
-
+    public void deleteCustomer(int customerId) throws CouponSystemException {
+        if (!customerRepository.existsById(customerId)) {
+            throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
+        }
+        customerRepository.deleteById(customerId);
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-        return null;
+        return customerRepository.findAll();
     }
 
     @Override
-    public Customer getSingleCustomer(int customerId) {
-        return null;
+    public Customer getSingleCustomer(int customerId) throws CouponSystemException {
+        return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_ALREADY_EXISTS));
     }
 }

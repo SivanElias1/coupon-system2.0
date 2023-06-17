@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "coupons")
 @NoArgsConstructor
@@ -28,5 +30,6 @@ public class Coupon {
     @JoinColumn
     @ToString.Exclude
     private Company company;
+
 
 }

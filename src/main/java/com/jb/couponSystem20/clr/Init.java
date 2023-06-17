@@ -3,7 +3,9 @@ package com.jb.couponSystem20.clr;
 import com.jb.couponSystem20.beans.Category;
 import com.jb.couponSystem20.beans.Company;
 import com.jb.couponSystem20.beans.Coupon;
+import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.repository.CompanyRepository;
+import com.jb.couponSystem20.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -18,6 +20,8 @@ import java.util.List;
 public class Init implements CommandLineRunner {
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -72,7 +76,7 @@ public class Init implements CommandLineRunner {
                 .name("DanHotel")
                 .email("DanHotel@example.com")
                 .password("1234")
-                .coupons(List.of(coupon2,coupon4))
+                .coupons(List.of(coupon2, coupon4))
                 .build();
 
         Company c3 = Company.builder()
@@ -82,11 +86,18 @@ public class Init implements CommandLineRunner {
                 .coupons(List.of(coupon3))
                 .build();
 
+        Customer customer1 = Customer.builder()
+                .firstName("or")
+                .lastName("asolin")
+                .email("or@mail.com")
+                .password("1234")
+                .build();
+        customerRepository.save(customer1);
         coupon1.setCompany(c1);
         coupon2.setCompany(c2);
         coupon3.setCompany(c3);
         coupon4.setCompany(c2);
-        companyRepository.saveAll(List.of(c1, c2,c3));
+        companyRepository.saveAll(List.of(c1, c2, c3));
 
 
     }
