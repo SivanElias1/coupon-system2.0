@@ -1,7 +1,11 @@
 package com.jb.couponSystem20.clr;
 
+import com.jb.couponSystem20.Exceptions.CouponSystemException;
+import com.jb.couponSystem20.Exceptions.ErrMsg;
 import com.jb.couponSystem20.beans.Category;
+import com.jb.couponSystem20.beans.Company;
 import com.jb.couponSystem20.beans.Coupon;
+import com.jb.couponSystem20.repository.CouponRepository;
 import com.jb.couponSystem20.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,9 +20,19 @@ import java.time.LocalDate;
 public class CompanyServiceTests implements CommandLineRunner {
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private CouponRepository couponRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("test -----------------> add coupon ----------> failed, title already exists");
+        Coupon coupon2 = couponRepository.findById(1).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
+        try {
+            companyService.addNewCoupon(coupon2);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("test -----------------> add coupon ----------> success");
         Coupon coupon1 = Coupon.builder()
                 .category(Category.ELECTRICITY)
@@ -33,5 +47,58 @@ public class CompanyServiceTests implements CommandLineRunner {
                 .build();
         companyService.addNewCoupon(coupon1);
         companyService.getAllCoupons().forEach(System.out::println);
+        System.out.println("test -----------------> update coupon ----------> failed, id not exists");
+        try {
+            companyService.updateCoupon(44, coupon1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("test -----------------> update coupon ----------> failed, cannot change coupon id");
+        Coupon couponToUpdate = couponRepository.findById(1).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
+        couponToUpdate.setId(55);
+        try {
+            companyService.updateCoupon(1, couponToUpdate);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        couponToUpdate.setId(1);
+        System.out.println("test -----------------> update coupon ----------> failed, cannot change coupon company id");
+        Company companyToChange = companyService.getSingleCompany(3);
+        couponToUpdate.setCompany(companyToChange);
+        try {
+            companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        couponToUpdate.setCompany(companyService.getSingleCompany(1));
+        System.out.println("test -----------------> update coupon ----------> success");
+        couponToUpdate.setTitle("update title!!");
+        couponToUpdate.setDescription("update !!");
+        companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate);
+        companyService.getAllCoupons().forEach(System.out::println);
+        System.out.println("test -----------------> delete coupon ----------> success");
+        try {
+            companyService.deleteCoupon(55);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("test -----------------> delete coupon ----------> success");
+        companyService.deleteCoupon(1);
+        companyService.getAllCoupons().forEach(System.out::println);
+        System.out.println("test -----------------> get all company coupons ----------> success");
+        // TODO: 18/06/2023
+
+        System.out.println("test -----------------> get all company coupons by category ----------> success");
+        companyService.getAllCouponsByCategory(Category.VOUCHER).forEach(System.out::println);
+        System.out.println("test -----------------> get all company coupons by max price ----------> success");
+        companyService.getAllCouponsByMaxPrice(350).forEach(System.out::println);
+        System.out.println("test -----------------> get single company coupons ----------> failed, company id not exists");
+        try {
+            System.out.println(companyService.getSingleCompany(55));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("test -----------------> get single company coupons ----------> success");
+        System.out.println(companyService.getSingleCompany(4));
     }
 }

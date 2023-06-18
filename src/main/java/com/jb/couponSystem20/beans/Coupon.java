@@ -30,6 +30,8 @@ public class Coupon {
     @JoinColumn
     @ToString.Exclude
     private Company company;
-
+    @ManyToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    private List<Customer> customers;
 
 }
