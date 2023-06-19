@@ -107,6 +107,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Customer getSingleCustomer(int customerId) throws CouponSystemException {
-        return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_ALREADY_EXISTS));
+        return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
     }
 }

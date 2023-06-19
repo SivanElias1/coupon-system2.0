@@ -10,13 +10,13 @@ public interface CustomerService {
 
     void couponPurchase(int customerId, int couponId) throws CouponSystemException;
 
-    List<Coupon> getCustomerCoupons();
+    List<Coupon> getCustomerCoupons(int customerId) throws CouponSystemException;
 
     List<Coupon> getCustomerCouponsByCategory();
 
     List<Coupon> getCustomerCouponsByMaxPrice();
 
-    Customer getCustomerDetails(int customerId);
+    Customer getCustomerDetails(int customerId) throws CouponSystemException;
 
 
 }
