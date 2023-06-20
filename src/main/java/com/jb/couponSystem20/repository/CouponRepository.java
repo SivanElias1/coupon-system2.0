@@ -18,7 +18,13 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     boolean existsByEndDateBefore(LocalDate now);
 
     List<Coupon> findByCategory(Category category);
-    List<Coupon> findByPriceBetween(double zero,double maxPrice);
+
+    List<Coupon> findByPriceBetween(double zero, double maxPrice);
+
     List<Coupon> findByCustomers(Customer customerId);
+
+    List<Coupon> findByCustomersAndCategory(Customer customerId, Category category);
+
+    List<Coupon> findByCustomersAndPriceBetween(Customer customerId, double zero, double maxPrice);
 
 }

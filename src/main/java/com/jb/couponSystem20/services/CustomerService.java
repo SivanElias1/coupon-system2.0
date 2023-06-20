@@ -1,6 +1,7 @@
 package com.jb.couponSystem20.services;
 
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
+import com.jb.couponSystem20.beans.Category;
 import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
 
@@ -12,9 +13,9 @@ public interface CustomerService {
 
     List<Coupon> getCustomerCoupons(int customerId) throws CouponSystemException;
 
-    List<Coupon> getCustomerCouponsByCategory();
+    List<Coupon> getCustomerCouponsByCategory(int customerId, Category category);
 
-    List<Coupon> getCustomerCouponsByMaxPrice();
+    List<Coupon> getCustomerCouponsByMaxPrice(int customerId,double zero,double maxPrice);
 
     Customer getCustomerDetails(int customerId) throws CouponSystemException;
 

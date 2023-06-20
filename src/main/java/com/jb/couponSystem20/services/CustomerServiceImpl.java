@@ -2,6 +2,7 @@ package com.jb.couponSystem20.services;
 
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
 import com.jb.couponSystem20.Exceptions.ErrMsg;
+import com.jb.couponSystem20.beans.Category;
 import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.repository.CouponRepository;
@@ -31,7 +32,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (couponRepository.existsByEndDateBefore(LocalDate.now())) {
             throw new CouponSystemException(ErrMsg.COUPON_DATE_IS_EXPIRED);
         }
-        customerToPurchase.setCoupons(List.of(couponToPurchase));
+        List<Coupon> couponList = customerToPurchase.getCoupons();
+        couponList.add(couponToPurchase);
+        customerToPurchase.setCoupons(couponList);
         customerRepository.saveAndFlush(customerToPurchase);
         couponToPurchase.setAmount(couponToPurchase.getAmount() - 1);
         couponRepository.saveAndFlush(couponToPurchase);
@@ -45,13 +48,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Coupon> getCustomerCouponsByCategory() {
-        return null;
+    public List<Coupon> getCustomerCouponsByCategory(int customerId, Category category) {
+        return couponRepository.findByCustomersAndCategory(customerRepository.findById(customerId).orElseThrow(), category);
     }
 
     @Override
-    public List<Coupon> getCustomerCouponsByMaxPrice() {
-        return null;
+    public List<Coupon> getCustomerCouponsByMaxPrice(int customerId, double zero, double maxPrice) {
+        return couponRepository.findByCustomersAndPriceBetween(customerRepository.findById(customerId).orElseThrow(),zero,maxPrice);
     }
 
     @Override

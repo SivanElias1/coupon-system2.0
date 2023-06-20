@@ -1,5 +1,6 @@
 package com.jb.couponSystem20.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,9 +30,11 @@ public class Coupon {
     @ManyToOne
     @JoinColumn
     @ToString.Exclude
+    @JsonIgnore
     private Company company;
     @ManyToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
     @ToString.Exclude
+    @JsonIgnore
     private List<Customer> customers;
 
 }
