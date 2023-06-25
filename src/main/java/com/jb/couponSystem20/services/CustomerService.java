@@ -13,11 +13,13 @@ public interface CustomerService {
 
     List<Coupon> getCustomerCoupons(int customerId) throws CouponSystemException;
 
-    List<Coupon> getCustomerCouponsByCategory(int customerId, Category category);
+    List<Coupon> getCustomerCouponsByCategory(int customerId, Category category) throws CouponSystemException;
 
-    List<Coupon> getCustomerCouponsByMaxPrice(int customerId,double zero,double maxPrice);
+    List<Coupon> getCustomerCouponsByMaxPrice(int customerId, double maxPrice) throws CouponSystemException;
 
     Customer getCustomerDetails(int customerId) throws CouponSystemException;
+
+    int getCustomerId(String email, String password);
 
 
 }

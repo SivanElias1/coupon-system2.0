@@ -5,20 +5,13 @@ import com.jb.couponSystem20.Exceptions.ErrMsg;
 import com.jb.couponSystem20.beans.Category;
 import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
-import com.jb.couponSystem20.repository.CouponRepository;
-import com.jb.couponSystem20.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
-    @Autowired
-    private CouponRepository couponRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
+public class CustomerServiceImpl extends ClientService implements CustomerService {
 
     public void couponPurchase(int customerId, int couponId) throws CouponSystemException {
         Customer customerToPurchase = customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
@@ -48,17 +41,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Coupon> getCustomerCouponsByCategory(int customerId, Category category) {
-        return couponRepository.findByCustomersAndCategory(customerRepository.findById(customerId).orElseThrow(), category);
+    public List<Coupon> getCustomerCouponsByCategory(int customerId, Category category) throws CouponSystemException {
+        return couponRepository.findByCustomersAndCategory(customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS)), category);
     }
 
     @Override
-    public List<Coupon> getCustomerCouponsByMaxPrice(int customerId, double zero, double maxPrice) {
-        return couponRepository.findByCustomersAndPriceBetween(customerRepository.findById(customerId).orElseThrow(),zero,maxPrice);
+    public List<Coupon> getCustomerCouponsByMaxPrice(int customerId, double maxPrice) throws CouponSystemException {
+        if (maxPrice < 0) {
+            throw new CouponSystemException(ErrMsg.PRICE_MUST_BE_GREATER_THEN_0);
+        }
+        return couponRepository.findByCustomersAndPriceBetween(customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS)), 0, maxPrice);
     }
 
     @Override
     public Customer getCustomerDetails(int customerId) throws CouponSystemException {
         return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
     }
+
+    @Override
+    public int getCustomerId(String email, String password) {
+        int customerId = customerRepository.findByEmailAndPassword(email, password);
+        return customerId;
+    }
+
+    @Override
+    public boolean login(String email, String password) {
+        return customerRepository.existsByEmailAndPassword(email, password);
+    }
+
 }

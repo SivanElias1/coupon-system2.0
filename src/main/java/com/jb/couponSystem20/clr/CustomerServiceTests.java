@@ -8,6 +8,7 @@ import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.repository.CouponRepository;
 import com.jb.couponSystem20.services.AdminService;
 import com.jb.couponSystem20.services.CustomerService;
+import com.jb.couponSystem20.services.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -20,7 +21,7 @@ import java.time.LocalDate;
 @Order(4)
 public class CustomerServiceTests implements CommandLineRunner {
     @Autowired
-    private CustomerService customerService;
+    private CustomerServiceImpl customerService;
     @Autowired
     private AdminService adminService;
     @Autowired
@@ -29,7 +30,13 @@ public class CustomerServiceTests implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        System.out.println("------------------------------------start customer tests-------------------------------------------------------");
+        System.out.println("test -----------------> login customer ----------> failed, wrong email");
+        System.out.println(customerService.login("stam@mail.com", "1234"));
+        System.out.println("test -----------------> login customer ----------> failed, wrong password");
+        System.out.println(customerService.login("itzik@mail.com", "12345"));
+        System.out.println("test -----------------> login customer ----------> success");
+        System.out.println(customerService.login("itzik@mail.com", "1234"));
 
         System.out.println("test -----------------> coupon purchase ----------> success");
         Customer c1 = Customer.builder()
@@ -85,9 +92,12 @@ public class CustomerServiceTests implements CommandLineRunner {
         customerService.couponPurchase(4, 6);
         customerService.getCustomerCouponsByCategory(4, Category.ELECTRICITY).forEach(System.out::println);
         System.out.println("test -----------------> get customer coupons by max price ----------> success");
-        customerService.getCustomerCouponsByMaxPrice(4,0,1000).forEach(System.out::println);
+        customerService.getCustomerCouponsByMaxPrice(4 , 1000).forEach(System.out::println);
         System.out.println("test -----------------> get customer details ----------> success");
         System.out.println(customerService.getCustomerDetails(4));
+
+        System.out.println("------------------------------------finish customer tests-------------------------------------------------------");
+
 
     }
 }

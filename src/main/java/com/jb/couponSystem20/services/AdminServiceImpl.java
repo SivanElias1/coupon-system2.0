@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdminServiceImpl implements AdminService {
-    @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
+public class AdminServiceImpl extends ClientService implements AdminService {
+
+
+    @Override
+    public boolean login(String email, String password) {
+        return email.equals("admin@admin.com") && password.equals("admin");
+    }
 
     @Override
     public void addCompany(Company company) throws CouponSystemException {
@@ -27,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
             throw new CouponSystemException(ErrMsg.COMPANY_NAME_ALREADY_EXISTS);
         }
         if (companyRepository.existsByEmail(company.getEmail())) {
-            throw new CouponSystemException(ErrMsg.EMAIL_ALREADY_EXISTS);
+            throw new CouponSystemException(ErrMsg.COMPANY_EMAIL_ALREADY_EXISTS);
         }
 
         companyRepository.save(company);
@@ -109,4 +111,6 @@ public class AdminServiceImpl implements AdminService {
     public Customer getSingleCustomer(int customerId) throws CouponSystemException {
         return customerRepository.findById(customerId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
     }
+
+
 }

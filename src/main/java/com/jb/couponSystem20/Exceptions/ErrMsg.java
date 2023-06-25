@@ -16,9 +16,15 @@ public enum ErrMsg {
     COMPANY_ID_ERROR("you cant change your company id"),
     COMPANY_NAME_ERROR("you cant change your company name"),
     COMPANY_NAME_ALREADY_EXISTS("company name already exists in system"),
-    EMAIL_ALREADY_EXISTS("company email already exists in system"),
+    COMPANY_EMAIL_ALREADY_EXISTS("company email already exists in system"),
     TITLE_ALREADY_TOKEN("title is already token"),
-    CUSTOMER_EMAIL_ALREADY_EXISTS("customer email already exists in system");
+    PRICE_MUST_BE_GREATER_THEN_0("price must be greater then 0"),
+    SECURITY_CANNOT_CREATE_ADMIN("security, you cannot create admin"),
+    CUSTOMER_EMAIL_ALREADY_EXISTS("customer email already exists in system"),
+    BAD_LOGIN_EMAIL_OR_PASSWORD_INCORRECT("bad login, email or password incorrect"),
+    SECURITY_EMAIL_ALREADY_EXISTS(" email already exists in system"),
+    SECURITY_UNAUTHRAIZD(" unauthorized action "),
+    SECURITY_UNAUTHRAIZD_ID(" unauthorized action, problem with id; try again  ");
 
 
     private String massage;

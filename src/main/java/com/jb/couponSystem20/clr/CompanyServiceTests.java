@@ -7,6 +7,7 @@ import com.jb.couponSystem20.beans.Company;
 import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.repository.CouponRepository;
 import com.jb.couponSystem20.services.CompanyService;
+import com.jb.couponSystem20.services.CompanyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -19,16 +20,25 @@ import java.time.LocalDate;
 @Order(3)
 public class CompanyServiceTests implements CommandLineRunner {
     @Autowired
-    private CompanyService companyService;
+    private CompanyServiceImpl companyService;
     @Autowired
     private CouponRepository couponRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("------------------------------------start company tests-------------------------------------------------------");
+
+        System.out.println("test -----------------> login company ----------> failed, wrong email");
+        System.out.println(companyService.login("stam@example.com", "1234"));
+        System.out.println("test -----------------> login company ----------> failed, wrong password");
+        System.out.println(companyService.login("amazon@example.com", "12345"));
+        System.out.println("test -----------------> login company ----------> success");
+        System.out.println(companyService.login("amazon@example.com", "1234"));
+
         System.out.println("test -----------------> add coupon ----------> failed, title already exists");
         Coupon coupon2 = couponRepository.findById(1).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         try {
-            companyService.addNewCoupon(coupon2);
+            companyService.addNewCoupon(coupon2,2 );
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -45,7 +55,7 @@ public class CompanyServiceTests implements CommandLineRunner {
                 .company(companyService.getSingleCompany(4))
                 .image("https://media.giphy.com/media/6FxJBpNTBgWdJCXKD4/giphy.gif")
                 .build();
-        companyService.addNewCoupon(coupon1);
+        companyService.addNewCoupon(coupon1, 4);
         companyService.getAllCoupons().forEach(System.out::println);
         System.out.println("test -----------------> update coupon ----------> failed, id not exists");
         try {
@@ -76,7 +86,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         couponToUpdate.setDescription("update !!");
         companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate);
         companyService.getAllCoupons().forEach(System.out::println);
-        System.out.println("test -----------------> delete coupon ----------> success");
+        System.out.println("test -----------------> delete coupon ----------> failed, id not exists");
         try {
             companyService.deleteCoupon(55);
         } catch (Exception e) {
@@ -84,14 +94,13 @@ public class CompanyServiceTests implements CommandLineRunner {
         }
         System.out.println("test -----------------> delete coupon ----------> success");
         companyService.deleteCoupon(1);
-        companyService.getAllCoupons().forEach(System.out::println);
+        companyService.getAllCoupons(4).forEach(System.out::println);
         System.out.println("test -----------------> get all company coupons ----------> success");
-        // TODO: 18/06/2023
-
+        companyService.getAllCoupons(4).forEach(System.out::println);
         System.out.println("test -----------------> get all company coupons by category ----------> success");
-        companyService.getAllCouponsByCategory(Category.VOUCHER).forEach(System.out::println);
+        companyService.getAllCouponsByCategory(Category.ELECTRICITY, 4).forEach(System.out::println);
         System.out.println("test -----------------> get all company coupons by max price ----------> success");
-        companyService.getAllCouponsByMaxPrice(350).forEach(System.out::println);
+        companyService.getAllCouponsByMaxPrice(5000, 4).forEach(System.out::println);
         System.out.println("test -----------------> get single company coupons ----------> failed, company id not exists");
         try {
             System.out.println(companyService.getSingleCompany(55));
@@ -100,5 +109,8 @@ public class CompanyServiceTests implements CommandLineRunner {
         }
         System.out.println("test -----------------> get single company coupons ----------> success");
         System.out.println(companyService.getSingleCompany(4));
+
+        System.out.println("------------------------------------finish company tests-------------------------------------------------------");
+
     }
 }

@@ -20,11 +20,16 @@ public class Coupon {
     private int id;
     @Enumerated(EnumType.STRING)
     private Category category;
+    @Column(nullable = false)
+
     private String title;
     private String description;
     private Date startDate;
     private Date endDate;
+    @Column(nullable = false)
     private int amount;
+    @Column(nullable = false)
+
     private double price;
     private String image;
     @ManyToOne

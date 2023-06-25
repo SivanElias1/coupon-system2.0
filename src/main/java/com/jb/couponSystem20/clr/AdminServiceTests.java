@@ -9,6 +9,7 @@ import com.jb.couponSystem20.repository.CompanyRepository;
 import com.jb.couponSystem20.repository.CouponRepository;
 import com.jb.couponSystem20.repository.CustomerRepository;
 import com.jb.couponSystem20.services.AdminService;
+import com.jb.couponSystem20.services.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -20,16 +21,18 @@ import java.util.List;
 @Order(2)
 public class AdminServiceTests implements CommandLineRunner {
     @Autowired
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
+    @Autowired
+    private CouponRepository couponRepository;
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
-    private CouponRepository couponRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("------------------------------------start admin tests-------------------------------------------------------");
+
         Company c1 = Company.builder()
                 .name("Apple")
                 .email("apple@example.com")
@@ -51,6 +54,13 @@ public class AdminServiceTests implements CommandLineRunner {
                 .email("amazon@example.com")
                 .password("1234")
                 .build();
+        System.out.println("test -----------------> login admin ----------> failed, wrong email");
+        System.out.println(adminService.login("no@admin.com", "admin"));
+        System.out.println("test -----------------> login admin ----------> failed, wrong password");
+        System.out.println(adminService.login("admin@admin.com", "nope"));
+        System.out.println("test -----------------> login admin ----------> success");
+        System.out.println(adminService.login("admin@admin.com", "admin"));
+
         System.out.println("test -----------------> add company ----------> failed, id already exists");
         try {
             adminService.addCompany(c2);
@@ -173,9 +183,11 @@ public class AdminServiceTests implements CommandLineRunner {
         Coupon coupon2 = couponRepository.findById(4).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         adminService.addNewCustomer(customer3);
         customer3.setCoupons(List.of(coupon2));
-        adminService.updateCustomer(customer3.getId(),customer3);
+        adminService.updateCustomer(customer3.getId(), customer3);
         adminService.getAllCustomers().forEach(System.out::println);
         System.out.println("test -----------------> get single customer ----------> success");
         System.out.println(adminService.getSingleCustomer(2));
+
+        System.out.println("------------------------------------finish admin tests-------------------------------------------------------");
     }
 }
