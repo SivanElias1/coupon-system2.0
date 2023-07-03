@@ -47,14 +47,14 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/byMaxPrice")
-    List<Coupon> getCustomerCouponsByMaxPrice(@RequestHeader(value = "Authorization") UUID token, @PathVariable int customerId, @RequestParam int maxPrice) throws CouponSystemException {
+    List<Coupon> getCustomerCouponsByMaxPrice(@RequestHeader(value = "Authorization") UUID token, @PathVariable int customerId, @RequestParam int val) throws CouponSystemException {
         if (!tokenService.isUserAllowed(token, ClientType.CUSTOMER)) {
             throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
         }
         if (tokenService.getCustomerId(token) != customerId) {
             throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
         }
-        return customerService.getCustomerCouponsByMaxPrice(customerId, maxPrice);
+        return customerService.getCustomerCouponsByMaxPrice(customerId, val);
     }
 
     @GetMapping("/{customerId}/byCategory")
@@ -68,7 +68,7 @@ public class CustomerController {
         return customerService.getCustomerCouponsByCategory(customerId, category);
     }
 
-    @GetMapping("/{customerId}/getCoupons")
+    @GetMapping("/{customerId}/coupons")
     List<Coupon> getCustomerCoupons(@RequestHeader(value = "Authorization") UUID token, @PathVariable int customerId) throws CouponSystemException {
         if (!tokenService.isUserAllowed(token, ClientType.CUSTOMER)) {
             throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);

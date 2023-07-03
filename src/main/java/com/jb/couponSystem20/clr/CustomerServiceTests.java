@@ -75,21 +75,10 @@ public class CustomerServiceTests implements CommandLineRunner {
         couponToPurchase.setEndDate(Date.valueOf(LocalDate.now().plusWeeks(1)));
         couponRepository.saveAndFlush(couponToPurchase);
         System.out.println("test -----------------> get customer coupons ----------> success");
-        customerService.couponPurchase(4, 5);
+        customerService.couponPurchase(4, 8);
         customerService.getCustomerCoupons(4).forEach(System.out::println);
         System.out.println("test -----------------> get customer coupons by category ----------> success");
-        Coupon coupon = Coupon.builder()
-                .category(Category.ELECTRICITY)
-                .title("25% off")
-                .description("sale 25% discount ")
-                .startDate(Date.valueOf(LocalDate.now()))
-                .endDate(Date.valueOf(LocalDate.now().plusWeeks(2)))
-                .amount(70)
-                .price(150)
-                .image("https://media.giphy.com/media/6FxJBpNTBgWdJCXKD4/giphy.gif")
-                .build();
-        couponRepository.save(coupon);
-        customerService.couponPurchase(4, 6);
+        customerService.couponPurchase(4, 7);
         customerService.getCustomerCouponsByCategory(4, Category.ELECTRICITY).forEach(System.out::println);
         System.out.println("test -----------------> get customer coupons by max price ----------> success");
         customerService.getCustomerCouponsByMaxPrice(4 , 1000).forEach(System.out::println);

@@ -3,6 +3,7 @@ package com.jb.couponSystem20.services;
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
 import com.jb.couponSystem20.Exceptions.ErrMsg;
 import com.jb.couponSystem20.beans.Company;
+import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.repository.CompanyRepository;
 import com.jb.couponSystem20.repository.CustomerRepository;
@@ -57,6 +58,8 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (!companyRepository.existsById(companyId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
         }
+        List<Coupon> couponList = couponRepository.findByCompany(companyRepository.findById(companyId).orElseThrow());
+        couponList.forEach(coupon -> couponRepository.deleteCoupon(coupon.getId()));
         companyRepository.deleteById(companyId);
     }
 
@@ -89,6 +92,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (customerId != customer.getId()) {
             throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_ID);
         }
+
         customer.setId(customerId);
         customerRepository.saveAndFlush(customer);
 

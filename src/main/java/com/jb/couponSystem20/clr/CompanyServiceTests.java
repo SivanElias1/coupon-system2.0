@@ -38,7 +38,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         System.out.println("test -----------------> add coupon ----------> failed, title already exists");
         Coupon coupon2 = couponRepository.findById(1).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         try {
-            companyService.addNewCoupon(coupon2,2 );
+            companyService.addNewCoupon(coupon2, 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -59,7 +59,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         companyService.getAllCoupons().forEach(System.out::println);
         System.out.println("test -----------------> update coupon ----------> failed, id not exists");
         try {
-            companyService.updateCoupon(44, coupon1);
+            companyService.updateCoupon(44, coupon1,coupon1.getCompany().getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -67,7 +67,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         Coupon couponToUpdate = couponRepository.findById(1).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         couponToUpdate.setId(55);
         try {
-            companyService.updateCoupon(1, couponToUpdate);
+            companyService.updateCoupon(1, couponToUpdate,couponToUpdate.getCompany().getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -76,7 +76,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         Company companyToChange = companyService.getSingleCompany(3);
         couponToUpdate.setCompany(companyToChange);
         try {
-            companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate);
+            companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate,couponToUpdate.getCompany().getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -84,7 +84,7 @@ public class CompanyServiceTests implements CommandLineRunner {
         System.out.println("test -----------------> update coupon ----------> success");
         couponToUpdate.setTitle("update title!!");
         couponToUpdate.setDescription("update !!");
-        companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate);
+        companyService.updateCoupon(couponToUpdate.getId(), couponToUpdate,couponToUpdate.getCompany().getId());
         companyService.getAllCoupons().forEach(System.out::println);
         System.out.println("test -----------------> delete coupon ----------> failed, id not exists");
         try {
@@ -92,8 +92,14 @@ public class CompanyServiceTests implements CommandLineRunner {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         System.out.println("test -----------------> delete coupon ----------> success");
-        companyService.deleteCoupon(1);
+        try {
+            companyService.deleteCoupon(1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         companyService.getAllCoupons(4).forEach(System.out::println);
         System.out.println("test -----------------> get all company coupons ----------> success");
         companyService.getAllCoupons(4).forEach(System.out::println);

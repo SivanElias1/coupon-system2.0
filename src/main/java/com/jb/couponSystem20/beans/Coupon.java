@@ -35,9 +35,9 @@ public class Coupon {
     @ManyToOne
     @JoinColumn
     @ToString.Exclude
-    @JsonIgnore
+    @JsonIgnore()
     private Company company;
-    @ManyToMany(mappedBy = "coupons", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "coupons")
     @ToString.Exclude
     @JsonIgnore
     private List<Customer> customers;

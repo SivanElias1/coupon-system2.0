@@ -10,7 +10,7 @@ import java.util.List;
 public interface CompanyService {
     void addNewCoupon(Coupon coupon,int companyId) throws CouponSystemException;
 
-    void updateCoupon(int couponId, Coupon coupon) throws CouponSystemException;
+    void updateCoupon(int couponId, Coupon coupon, int companyId) throws CouponSystemException;
 
     void deleteCoupon(int couponId) throws CouponSystemException;
 

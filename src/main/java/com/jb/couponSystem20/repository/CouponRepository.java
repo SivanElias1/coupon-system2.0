@@ -4,7 +4,9 @@ import com.jb.couponSystem20.beans.Category;
 import com.jb.couponSystem20.beans.Company;
 import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +18,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
     boolean existsByTitleAndCompanyId(String title, int companyId);
 
-    boolean existsByEndDateBefore(LocalDate now);
+    boolean existsByEndDateBeforeAndId(LocalDate now, int couponId);
 
     List<Coupon> findByCategory(Category category);
 
@@ -33,5 +35,13 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     List<Coupon> findByEndDateBefore(LocalDate now);
 
     List<Coupon> findByCompany(Company companyId);
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = "delete  FROM `couponsystem2.0`.customers_coupons where coupons_id = ?;")
+    void deleteCoupon(int couponsId);
+
+
+
 
 }

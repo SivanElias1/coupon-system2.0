@@ -15,7 +15,7 @@ public class DailyRemovalExpired {
     @Autowired
     private CouponRepository couponRepository;
 
-    @Scheduled(fixedRate = 1000*60)
+    @Scheduled(fixedRate = 1000*60*2)
     public void deleteExpiredCoupons() {
         System.out.println("searching for expired coupons");
         List<Coupon>couponExpired = couponRepository.findByEndDateBefore(LocalDate.now());

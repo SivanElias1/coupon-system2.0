@@ -17,4 +17,5 @@ public abstract class ClientService {
     protected CouponRepository couponRepository;
 
     public abstract boolean login(String email , String password);
+
 }

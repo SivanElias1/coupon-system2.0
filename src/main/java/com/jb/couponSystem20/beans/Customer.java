@@ -28,7 +28,8 @@ public class Customer {
     private String email;
     @Column(length = 40, nullable = false)
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable
     private List<Coupon> coupons;
 
 

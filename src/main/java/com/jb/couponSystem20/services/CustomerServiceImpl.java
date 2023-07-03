@@ -22,7 +22,7 @@ public class CustomerServiceImpl extends ClientService implements CustomerServic
         if (couponToPurchase.getAmount() <= 0) {
             throw new CouponSystemException(ErrMsg.COUPON_AMOUNT_IS_0);
         }
-        if (couponRepository.existsByEndDateBefore(LocalDate.now())) {
+        if (couponRepository.existsByEndDateBeforeAndId(LocalDate.now(),couponId )) {
             throw new CouponSystemException(ErrMsg.COUPON_DATE_IS_EXPIRED);
         }
         List<Coupon> couponList = customerToPurchase.getCoupons();
