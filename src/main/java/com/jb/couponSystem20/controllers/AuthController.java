@@ -2,6 +2,7 @@ package com.jb.couponSystem20.controllers;
 
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
 import com.jb.couponSystem20.beans.User;
+import com.jb.couponSystem20.dto.LoginResDto;
 import com.jb.couponSystem20.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,9 @@ public class AuthController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UUID login(@RequestBody User user) throws CouponSystemException {
-        return authService.login(user);
+    public LoginResDto login(@RequestBody User user) throws CouponSystemException {
+        String email = user.getEmail();
+        UUID token = authService.login(user);
+        return new LoginResDto(token,email);
     }
 }
