@@ -2,8 +2,10 @@ package com.jb.couponSystem20.services;
 
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
 import com.jb.couponSystem20.Exceptions.ErrMsg;
+import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.beans.User;
 import com.jb.couponSystem20.login.ClientType;
+import com.jb.couponSystem20.repository.CustomerRepository;
 import com.jb.couponSystem20.repository.UserRepository;
 import com.jb.couponSystem20.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private CustomerService customerService;
     @Autowired
     private CompanyService companyService;
+
 
     @Override
     public void register(User user) throws CouponSystemException {

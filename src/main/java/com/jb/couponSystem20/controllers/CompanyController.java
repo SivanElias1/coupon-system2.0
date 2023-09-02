@@ -26,80 +26,80 @@ public class CompanyController {
     @PostMapping("/{companyId}/coupon")
     @ResponseStatus(HttpStatus.CREATED)
     void addNewCoupon(@RequestHeader(value = "Authorization") UUID token, @RequestBody Coupon coupon, @PathVariable int companyId) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         companyService.addNewCoupon(coupon, companyId);
     }
 
     @PutMapping("/{companyId}/coupon/{couponId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateCoupon(@RequestHeader(value = "Authorization") UUID token, @PathVariable int companyId, @PathVariable int couponId, @RequestBody Coupon coupon) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
-        companyService.updateCoupon(couponId, coupon,companyId);
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
+        companyService.updateCoupon(couponId, coupon, companyId);
     }
 
     @DeleteMapping("/{companyId}/coupon/{couponId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteCoupon(@RequestHeader(value = "Authorization") UUID token, @PathVariable int companyId, @PathVariable int couponId) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         companyService.deleteCoupon(couponId);
     }
 
     @GetMapping("/{companyId}/coupons")
     List<Coupon> getAllCoupons(@RequestHeader(value = "Authorization") UUID token, @PathVariable int companyId) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         return companyService.getAllCoupons(companyId);
     }
 
     @GetMapping("/{companyId}/byCategory")
     List<Coupon> getAllCouponsByCategory(@RequestHeader(value = "Authorization") UUID token, @PathVariable int companyId, @RequestParam Category category) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         return companyService.getAllCouponsByCategory(category, companyId);
     }
 
     @GetMapping("/{companyId}/byMaxPrice")
     List<Coupon> getAllCouponsByMaxPrice(@RequestHeader(value = "Authorization") UUID token, @RequestParam double val, @PathVariable int companyId) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         return companyService.getAllCouponsByMaxPrice(val, companyId);
     }
 
     @GetMapping("/{companyId}")
     Company getSingleCompany(@RequestHeader(value = "Authorization") UUID token, @PathVariable int companyId) throws CouponSystemException {
-//        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-//        }
-//        if (tokenService.getCustomerId(token) != companyId) {
-//            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
-//        }
+        if (!tokenService.isUserAllowed(token, ClientType.COMPANY)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
+        if (tokenService.getCustomerId(token) != companyId) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD_ID);
+        }
         return companyService.getSingleCompany(companyId);
     }
 

@@ -11,6 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class LoginResDto {
 
+    private int id;
     private UUID token;
     private String email;
 }

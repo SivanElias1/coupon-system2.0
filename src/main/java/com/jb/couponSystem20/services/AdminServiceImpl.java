@@ -41,9 +41,9 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (!companyRepository.existsById(companyId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
         }
-        if (companyId != company.getId()) {
-            throw new CouponSystemException(ErrMsg.COMPANY_ID_ERROR);
-        }
+//        if (companyId != company.getId()) {
+//            throw new CouponSystemException(ErrMsg.COMPANY_ID_ERROR);
+//        }
         Company companyFromDB = companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         if (!companyFromDB.getName().equals(company.getName())) {
             throw new CouponSystemException(ErrMsg.COMPANY_NAME_ERROR);
@@ -89,9 +89,9 @@ public class AdminServiceImpl extends ClientService implements AdminService {
         if (!customerRepository.existsById(customerId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
         }
-        if (customerId != customer.getId()) {
-            throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_ID);
-        }
+//        if (customerId != customer.getId()) {
+//            throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_ID);
+//        }
 
         customer.setId(customerId);
         customerRepository.saveAndFlush(customer);
