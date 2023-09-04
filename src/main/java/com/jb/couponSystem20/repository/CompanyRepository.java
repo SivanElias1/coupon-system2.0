@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
@@ -13,4 +15,5 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     boolean existsByEmailAndPassword(String email,String password);
     @Query(nativeQuery = true,value = "SELECT id FROM `couponsystem2.0`.companies where email = ? and password = ? ;")
     int findByEmailAndPassword(String email, String password);
+
 }

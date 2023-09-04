@@ -35,6 +35,9 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
     List<Coupon> findByEndDateBefore(LocalDate now);
 
     List<Coupon> findByCompany(Company companyId);
+    @Query(nativeQuery = true, value = "SELECT company_id FROM `couponsystem2.0`.coupons;")
+    List<Integer> findCompanyId();
+
 
     @Modifying
     @Transactional

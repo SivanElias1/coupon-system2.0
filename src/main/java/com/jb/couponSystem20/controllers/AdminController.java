@@ -3,8 +3,11 @@ package com.jb.couponSystem20.controllers;
 import com.jb.couponSystem20.Exceptions.CouponSystemException;
 import com.jb.couponSystem20.Exceptions.ErrMsg;
 import com.jb.couponSystem20.beans.Company;
+import com.jb.couponSystem20.beans.Coupon;
 import com.jb.couponSystem20.beans.Customer;
 import com.jb.couponSystem20.login.ClientType;
+import com.jb.couponSystem20.repository.CompanyRepository;
+import com.jb.couponSystem20.repository.CouponRepository;
 import com.jb.couponSystem20.security.TokenService;
 import com.jb.couponSystem20.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/admin")
@@ -22,12 +26,17 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    CouponRepository couponRepository;
+    @Autowired
+    CompanyRepository companyRepository;
 
     @PostMapping("/company")
     @ResponseStatus(HttpStatus.CREATED)
     void addCompany(@RequestHeader(value = "Authorization") UUID token, @RequestBody Company company) throws CouponSystemException {
-       if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
-            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);     }
+        if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
         adminService.addCompany(company);
     }
 
@@ -68,15 +77,17 @@ public class AdminController {
     @PostMapping("/customer")
     @ResponseStatus(HttpStatus.CREATED)
     void addNewCustomer(@RequestHeader(value = "Authorization") UUID token, @RequestBody Customer customer) throws CouponSystemException {
-       if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
-       }
+        if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
         adminService.addNewCustomer(customer);
     }
 
     @GetMapping("/customer/{customerId}")
     Customer getSingleCustomer(@RequestHeader(value = "Authorization") UUID token, @PathVariable int customerId) throws CouponSystemException {
         if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
-           throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);}
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        }
         return adminService.getSingleCustomer(customerId);
     }
 
@@ -92,8 +103,8 @@ public class AdminController {
     @DeleteMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteCustomer(@RequestHeader(value = "Authorization") UUID token, @PathVariable int customerId) throws CouponSystemException {
-       if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
-           throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
+        if (!tokenService.isUserAllowed(token, ClientType.ADMINISTRATOR)) {
+            throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
         }
         adminService.deleteCustomer(customerId);
     }
@@ -104,5 +115,19 @@ public class AdminController {
             throw new CouponSystemException(ErrMsg.SECURITY_UNAUTHRAIZD);
         }
         return adminService.getAllCustomers();
+    }
+
+    @GetMapping("/coupons")
+    List<Coupon> getAllCoupons() {
+        return couponRepository.findAll();
+    }
+
+    @GetMapping("/companyName")
+    List<Company> getAllCouponsCompanyId() {
+        List<Integer> idList = couponRepository.findCompanyId();
+
+        List<Company> companies = companyRepository.findAllById(idList);
+        return companies;
+
     }
 }

@@ -31,9 +31,9 @@ public class CompanyServiceImpl extends ClientService implements CompanyService 
         if (!couponRepository.existsById(couponId)) {
             throw new CouponSystemException(ErrMsg.ID_NOT_EXISTS);
         }
-        if (couponId != coupon.getId()) {
-            throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_COUPON_ID);
-        }
+//        if (couponId != coupon.getId()) {
+//            throw new CouponSystemException(ErrMsg.ERROR_CANT_CHANGE_COUPON_ID);
+//        }
 
         coupon.setCompany(companyRepository.findById(companyId).orElseThrow());
         coupon.setId(couponId);
