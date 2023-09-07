@@ -44,6 +44,7 @@ public class AdminServiceImpl extends ClientService implements AdminService {
 //        if (companyId != company.getId()) {
 //            throw new CouponSystemException(ErrMsg.COMPANY_ID_ERROR);
 //        }
+
         Company companyFromDB = companyRepository.findById(companyId).orElseThrow(() -> new CouponSystemException(ErrMsg.ID_NOT_EXISTS));
         if (!companyFromDB.getName().equals(company.getName())) {
             throw new CouponSystemException(ErrMsg.COMPANY_NAME_ERROR);

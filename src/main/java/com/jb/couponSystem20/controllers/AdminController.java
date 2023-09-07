@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -125,9 +126,17 @@ public class AdminController {
     @GetMapping("/companyName")
     List<Company> getAllCouponsCompanyId() {
         List<Integer> idList = couponRepository.findCompanyId();
+        List<Company> companies = new ArrayList<>();
 
-        List<Company> companies = companyRepository.findAllById(idList);
+        for (Integer id : idList) {
+            Company company = companyRepository.findById(id).orElseThrow();
+            if (company != null) {
+                companies.add(company);
+            }
+        }
+
         return companies;
-
     }
+
+
 }
